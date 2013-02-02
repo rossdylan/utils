@@ -1,7 +1,8 @@
 utils.fun
     @curry(int)
-        A decorator that lets your functions support function currying by default with out have to explicitly wrap them using funtools.partial
-    _
+        A decorator that lets your functions support function currying by default with out have to explicitly 
+        wrap them using funtools.partial
+    _ (underscore)
         A class that equals whatever you compare it to
             _ == 3 -> True
             _ == "Test" -> True
