@@ -25,6 +25,13 @@ def PipeLine(*funcs, **kwargs):
 
 
 def ReducePipeline(*funcs, **kwargs):
+    """
+    Given an arbitrary number of functions we create a pipeline where the output
+    is piped between functions. You can also specify a tuple of arguments that
+    should be passed to the functions in the pipeline. The first argument is
+    always the output of the previous function. This version uses the reduce builtin
+    instead of using recursion.
+    """
     def accum(val, func):
         funcArgs = kwargs.get(func.__name__, tuple())
         if hasattr(val, "__call__"):
@@ -37,6 +44,25 @@ def ReducePipeline(*funcs, **kwargs):
         return reduce(accum, newFuncs)
     return wrapper
 
+
+class DotPipeline(object):
+    """
+    String together a series of functions using dot syntax.
+    give DotPipeline's constructor the starting value, and the globals dict
+    and then you can call string functions together
+    addOne = lambda x: x+1
+    subTwo = lambda x: x-2
+    p = DotPipeline(1,globals())
+    p.addOne.subTwo() -> 0
+    """
+    def __init__(self, val, topGlobals):
+        self.val = val
+        self.topGlobals = topGlobals
+    def __getattr__(self, name):
+        self.topGlobals.update(globals())
+        return DotPipeline(self.topGlobals[name](self.val), self.topGlobals)
+    def __call__(self):
+        return self.val
 
 def testPipelineWithArgs():
     """
