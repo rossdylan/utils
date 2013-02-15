@@ -10,13 +10,13 @@ class curry(object):
     Decorator which takes a int which is the maximum number of args the decorated function can take
     """
     def __init__(self, numArgs):
-        self.__delattr__numArgs = numArgs
+        self.numArgs = numArgs
 
     def __call__(self, func):
-        if self.__delattr__numArgs > 0:
-            @curry(self.__delattr__numArgs-1)
+        if self.numArgs > 0:
+            @curry(self.numArgs-1)
             def wrapper(*args, **kwargs):
-                if len(args) < self.__delattr__numArgs:
+                if len(args) < self.numArgs:
                     return partial(func, *args)
                 else:
                     return partial(func, *args)(**kwargs)
