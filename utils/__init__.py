@@ -1,1 +1,1 @@
-__all__ = ['fun', 'pipelines']
+__all__ = ['fun', 'pipelines', 'lazy']
